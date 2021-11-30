@@ -2,6 +2,7 @@ package com.gerimedica.test.assignment.controller;
 
 import java.security.Provider.Service;
 import java.util.List;
+import java.util.Optional;
 
 import javax.websocket.server.PathParam;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -69,15 +71,15 @@ public class AssignmentController {
   }
   
   @GetMapping("/data/{code}")
-  public ResponseEntity<Data> getData(@PathParam("code") String code) {
+  public ResponseEntity<Data> getData(@PathVariable("code") String code) {
     try {
-      Data data = assignmentService.getData(code);
+      Optional<Data> data = assignmentService.getData(code);
 
-      if (data!=null) {
+      if (!data.isPresent()) {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
       }
 
-      return new ResponseEntity<>(data, HttpStatus.OK);
+      return new ResponseEntity<>(data.get(), HttpStatus.OK);
     } catch (Exception e) {
       return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }

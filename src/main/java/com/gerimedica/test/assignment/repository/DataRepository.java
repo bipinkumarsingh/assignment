@@ -9,6 +9,4 @@ import com.gerimedica.test.assignment.model.Data;
 
 @Repository
 public interface DataRepository extends JpaRepository<Data, String> {
-
-	Data findByCode(String code);
 }

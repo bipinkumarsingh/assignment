@@ -2,6 +2,9 @@ package com.gerimedica.test.assignment.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ public class AssignmentService {
 	@Autowired
 	DataRepository repository;
 
+	@Transactional
 	public void save(MultipartFile file) {
 		try {
 			List<Data> tutorials = CSVUtil.csvToData(file.getInputStream());
@@ -30,8 +34,8 @@ public class AssignmentService {
 		return repository.findAll();
 	}
 
-	public Data getData(String code) {
-        return repository.findByCode(code);
+	public Optional<Data> getData(String code) {
+        return repository.findById(code);
 	}
 
 	public void deleteAllData() {
